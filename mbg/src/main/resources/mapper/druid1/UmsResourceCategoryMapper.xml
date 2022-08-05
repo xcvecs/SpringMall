@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.byteinfo.springmall.mbg.mapper.UmsResourceCategoryMapper">
+  <resultMap id="BaseResultMap" type="top.byteinfo.springmall.mbg.entity.UmsResourceCategory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ums_resource_category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.byteinfo.springmall.mbg.entity.UmsResourceCategory">
+    insert into ums_resource_category (id, create_time, `name`, 
+      sort)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="top.byteinfo.springmall.mbg.entity.UmsResourceCategory">
+    update ums_resource_category
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      `name` = #{name,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, create_time, `name`, sort
+    from ums_resource_category
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, create_time, `name`, sort
+    from ums_resource_category
+  </select>
+</mapper>

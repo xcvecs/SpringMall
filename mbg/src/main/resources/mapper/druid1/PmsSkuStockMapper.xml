@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.byteinfo.springmall.mbg.mapper.PmsSkuStockMapper">
+  <resultMap id="BaseResultMap" type="top.byteinfo.springmall.mbg.entity.PmsSkuStock">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="sku_code" jdbcType="VARCHAR" property="skuCode" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="low_stock" jdbcType="INTEGER" property="lowStock" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="sale" jdbcType="INTEGER" property="sale" />
+    <result column="promotion_price" jdbcType="DECIMAL" property="promotionPrice" />
+    <result column="lock_stock" jdbcType="INTEGER" property="lockStock" />
+    <result column="sp_data" jdbcType="VARCHAR" property="spData" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pms_sku_stock
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.byteinfo.springmall.mbg.entity.PmsSkuStock">
+    insert into pms_sku_stock (id, product_id, sku_code, 
+      price, stock, low_stock, 
+      pic, sale, promotion_price, 
+      lock_stock, sp_data)
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{skuCode,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, #{lowStock,jdbcType=INTEGER}, 
+      #{pic,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, #{promotionPrice,jdbcType=DECIMAL}, 
+      #{lockStock,jdbcType=INTEGER}, #{spData,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="top.byteinfo.springmall.mbg.entity.PmsSkuStock">
+    update pms_sku_stock
+    set product_id = #{productId,jdbcType=BIGINT},
+      sku_code = #{skuCode,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      stock = #{stock,jdbcType=INTEGER},
+      low_stock = #{lowStock,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=VARCHAR},
+      sale = #{sale,jdbcType=INTEGER},
+      promotion_price = #{promotionPrice,jdbcType=DECIMAL},
+      lock_stock = #{lockStock,jdbcType=INTEGER},
+      sp_data = #{spData,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, product_id, sku_code, price, stock, low_stock, pic, sale, promotion_price, 
+    lock_stock, sp_data
+    from pms_sku_stock
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, product_id, sku_code, price, stock, low_stock, pic, sale, promotion_price, 
+    lock_stock, sp_data
+    from pms_sku_stock
+  </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.byteinfo.springmall.mbg.mapper.UmsMemberTaskMapper">
+  <resultMap id="BaseResultMap" type="top.byteinfo.springmall.mbg.entity.UmsMemberTask">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="growth" jdbcType="INTEGER" property="growth" />
+    <result column="intergration" jdbcType="INTEGER" property="intergration" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ums_member_task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.byteinfo.springmall.mbg.entity.UmsMemberTask">
+    insert into ums_member_task (id, `name`, growth, 
+      intergration, `type`)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{growth,jdbcType=INTEGER}, 
+      #{intergration,jdbcType=INTEGER}, #{type,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="top.byteinfo.springmall.mbg.entity.UmsMemberTask">
+    update ums_member_task
+    set `name` = #{name,jdbcType=VARCHAR},
+      growth = #{growth,jdbcType=INTEGER},
+      intergration = #{intergration,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, `name`, growth, intergration, `type`
+    from ums_member_task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, `name`, growth, intergration, `type`
+    from ums_member_task
+  </select>
+</mapper>

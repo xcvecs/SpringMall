@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.byteinfo.springmall.mbg.mapper.UmsMemberProductCategoryRelationMapper">
+  <resultMap id="BaseResultMap" type="top.byteinfo.springmall.mbg.entity.UmsMemberProductCategoryRelation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="member_id" jdbcType="BIGINT" property="memberId" />
+    <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ums_member_product_category_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.byteinfo.springmall.mbg.entity.UmsMemberProductCategoryRelation">
+    insert into ums_member_product_category_relation (id, member_id, product_category_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{memberId,jdbcType=BIGINT}, #{productCategoryId,jdbcType=BIGINT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="top.byteinfo.springmall.mbg.entity.UmsMemberProductCategoryRelation">
+    update ums_member_product_category_relation
+    set member_id = #{memberId,jdbcType=BIGINT},
+      product_category_id = #{productCategoryId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, member_id, product_category_id
+    from ums_member_product_category_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, member_id, product_category_id
+    from ums_member_product_category_relation
+  </select>
+</mapper>
