@@ -1,5 +1,6 @@
 package top.byteinfo.springmall.web.config.mybatisplus;
 
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -16,6 +17,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 
 /**
  * TODO DataSourceTransactionManager
@@ -37,6 +39,8 @@ public class DataSourceMybatisConfig {
 //    }
     private Environment env;
 
+
+
     @Autowired
     public void setEnv(Environment env) {
         this.env = env;
@@ -47,24 +51,22 @@ public class DataSourceMybatisConfig {
 
         @Primary
         @Bean(name = "DS1")
-//    @ConfigurationProperties("spring.datasource.hikari.h1")
         public DataSource first() {
             HikariDataSource hikariDataSource = new HikariDataSource();
-            hikariDataSource.setJdbcUrl(env.getProperty(""));
-            hikariDataSource.setUsername("root");
-            hikariDataSource.setPassword("root");
+            hikariDataSource.setJdbcUrl(env.getProperty("spring.datasource.DS1blog.url"));
+            hikariDataSource.setUsername(env.getProperty("spring.datasource.DS1blog.username"));
+            hikariDataSource.setPassword(env.getProperty("spring.datasource.DS1blog.password"));
             hikariDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
             return hikariDataSource;
         }
 
         @Primary
         @Bean(name = "DS2")
-//    @ConfigurationProperties("spring.datasource.hikari.h1")
         public DataSource second() {
             HikariDataSource hikariDataSource = new HikariDataSource();
-            hikariDataSource.setJdbcUrl("jdbc:mysql://localhost/entity?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC");
-            hikariDataSource.setUsername("root");
-            hikariDataSource.setPassword("root");
+            hikariDataSource.setJdbcUrl(env.getProperty("spring.datasource.DS2cd_blog.url"));
+            hikariDataSource.setUsername(env.getProperty("spring.datasource.DS2cd_blog.username"));
+            hikariDataSource.setPassword(env.getProperty("spring.datasource.DS2cd_blog.password"));
             hikariDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
             return hikariDataSource;
         }
@@ -72,17 +74,22 @@ public class DataSourceMybatisConfig {
 
 
     /**
+     * 该配置从 mybatis配置 修改而来。基于mapperScan注解
      * @see org.mybatis.spring.annotation.MapperScannerRegistrar
      * @see org.springframework.beans.factory.support.BeanDefinitionBuilder
      * {@link  org.mybatis.spring.mapper.MapperScannerConfigurer}
-     * 
+     *
+     * 该配置可靠性基于 mybatisplus 对mybatis 兼容性。如官网宣传 无侵入：只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑
+     * todo 但仍然替换了 SqlSessionFactoryBean 为 MybatisSqlSessionFactoryBean
+     * @see MybatisSqlSessionFactoryBean
+     * @see SqlSessionFactoryBean
+     *
      */
     @Configuration
-    @MapperScan(basePackages = {"top.byteinfo.springmall.mbg.mapper"}, sqlSessionTemplateRef = "druid1SqlSessionTemplate")
+    @MapperScan(basePackages = {"top.byteinfo.springmall.mbg.mapper","top.byteinfo.springmall.web.model.blog.dao"}, sqlSessionTemplateRef = "druid1SqlSessionTemplate")
     public class Druid1 {
 
         /**
-         * {@link org.mybatis.spring.mapper.MapperScannerConfigurer#setSqlSessionFactoryBeanName(String)}
          * @param dataSource
          * @return
          * @throws Exception
@@ -90,10 +97,14 @@ public class DataSourceMybatisConfig {
         @Primary
         @Bean(name = "druid1SqlSessionFactory")
         public SqlSessionFactory sqlSessionFactory(@Qualifier("DS1") DataSource dataSource) throws Exception {
-//            MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
-            SqlSessionFactoryBean mybatisSqlSessionFactoryBean = new SqlSessionFactoryBean();
+
+            MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+//            SqlSessionFactoryBean mybatisSqlSessionFactoryBean = new SqlSessionFactoryBean();
             mybatisSqlSessionFactoryBean.setDataSource(dataSource);
-            mybatisSqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/druid1/*.xml"));
+            mybatisSqlSessionFactoryBean.setMapperLocations(
+                    new PathMatchingResourcePatternResolver()
+                            .getResources(Objects.requireNonNull(env.getProperty("spring.datasource.DS1blog.mybatis-plus.mapper-locations")))
+            );
             return mybatisSqlSessionFactoryBean.getObject();
         }
 
@@ -110,30 +121,31 @@ public class DataSourceMybatisConfig {
         }
     }
 
-//    @Configuration
-//    @MapperScan(basePackages = "top.byteinfo.springmall.mbg.mapper", sqlSessionTemplateRef = "druid2SqlSessionTemplate")
-//    public class Druid2 {
-//
-//        @Primary
-//        @Bean(name = "druid2SqlSessionFactory")
-//        public SqlSessionFactory sqlSessionFactory(@Qualifier("DS2") DataSource dataSource) throws Exception {
-//            MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+    @Configuration
+    @MapperScan(basePackages = "top.byteinfo.springmall.web.model.cdblog.dao", sqlSessionTemplateRef = "druid2SqlSessionTemplate")
+    public class Druid2 {
+
+        @Primary
+        @Bean(name = "druid2SqlSessionFactory")
+        public SqlSessionFactory sqlSessionFactory(@Qualifier("DS2") DataSource dataSource) throws Exception {
+            MybatisSqlSessionFactoryBean sessionFactoryBean = new MybatisSqlSessionFactoryBean();
 //            SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
-//            sessionFactoryBean.setDataSource(dataSource);
-//            sessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/druid2/*Mapper.xml"));
-//            return sessionFactoryBean.getObject();
-//        }
-//
-//        @Primary
-//        @Bean("druid2TransactionManager")
-//        public DataSourceTransactionManager dataSourceTransactionManager(@Qualifier("DS2") DataSource dataSource) {
-//            return new DataSourceTransactionManager(dataSource);
-//        }
-//
-//        @Primary
-//        @Bean("druid2SqlSessionTemplate")
-//        public SqlSessionTemplate sqlSessionTemplate(@Qualifier("druid2SqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
-//            return new SqlSessionTemplate(sqlSessionFactory);
-//        }
-//    }
+            sessionFactoryBean.setDataSource(dataSource);
+            sessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver()
+                    .getResources(Objects.requireNonNull(env.getProperty("spring.datasource.DS2cd_blog.mybatis-plus.mapper-locations"))));
+            return sessionFactoryBean.getObject();
+        }
+
+        @Primary
+        @Bean("druid2TransactionManager")
+        public DataSourceTransactionManager dataSourceTransactionManager(@Qualifier("DS2") DataSource dataSource) {
+            return new DataSourceTransactionManager(dataSource);
+        }
+
+        @Primary
+        @Bean("druid2SqlSessionTemplate")
+        public SqlSessionTemplate sqlSessionTemplate(@Qualifier("druid2SqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+            return new SqlSessionTemplate(sqlSessionFactory);
+        }
+    }
 }

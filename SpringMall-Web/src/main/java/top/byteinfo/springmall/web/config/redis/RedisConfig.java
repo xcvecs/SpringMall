@@ -27,7 +27,7 @@ public class RedisConfig {
 
                 .entryTtl(Duration.ofHours(10))
                 .disableCachingNullValues();
-        RedisCacheManager redisCacheManager = RedisCacheManager.builder()
+        RedisCacheManager redisCacheManager = RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(config)
                 .withInitialCacheConfigurations(singletonMap("predefined", config))
                 .transactionAware()

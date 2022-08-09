@@ -10,7 +10,6 @@ import top.byteinfo.springmall.web.service.IOArticleService;
  *
  */
 @Service("service")
-//@CustomConditionalOnProperty
 public class IOArticleServiceImpl extends ServiceImpl<ArticleDao, Article> implements IOArticleService {
     @Override
     public String se2(){
@@ -18,4 +17,5 @@ public class IOArticleServiceImpl extends ServiceImpl<ArticleDao, Article> imple
         System.out.println(Article.toString());
         return Article.toString();
     }
+
 }

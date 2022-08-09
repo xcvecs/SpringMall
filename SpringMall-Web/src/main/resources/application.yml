@@ -18,15 +18,25 @@ server:
 
 spring:
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.11:3306/blog?serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: root
-    password: root
+    DS1blog:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.1.11:3306/blog?serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: root
+      password: root
+      mybatis-plus:
+        mapper-locations: classpath*:mapper/druid1/*.xml
+    DS2cd_blog:
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.1.11:3306/cd_blog?serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: root
+      password: root
+      mybatis-plus:
+        mapper-locations: classpath*:mapper/druid2/*.xml
   redis:
     port: 6379
     host: 192.168.1.11
-mybatis-plus:
-  mapper-locations: classpath*:mapper/druid1/*.xml
+
 
 
