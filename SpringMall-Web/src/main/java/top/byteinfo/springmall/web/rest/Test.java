@@ -23,12 +23,12 @@ public class Test {
     }
 
     @GetMapping("/")
-    public String t0(HttpServletRequest request) {
+    public String test(HttpServletRequest request) {
 
        return UtilsTbArticleService.se1();
     }
     @GetMapping("/11")
-    public String t(HttpServletRequest request) {
+    public String test11(HttpServletRequest request) {
 
         return IOArticleService.se2();
     }
