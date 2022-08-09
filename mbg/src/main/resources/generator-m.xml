@@ -37,7 +37,7 @@
 
         <!--数据库链接地址账号密码-->
         <!--数据库驱动、链接URL、用户名、密码 -->
-        <jdbcConnection connectionURL="jdbc:mysql://192.168.1.11/mall"
+        <jdbcConnection connectionURL="jdbc:mysql://192.168.1.11/blog"
                         driverClass="com.mysql.cj.jdbc.Driver"
                         userId="root"
                         password="root">

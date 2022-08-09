@@ -83,7 +83,7 @@
                 <version>1.4.0</version>
                 <configuration>
                     <!-- mybatis-generator的配置文件，根据情况调整位置 -->
-                    <configurationFile>src/main/resources/generator-m.xml</configurationFile>
+                    <configurationFile>src/main/resources/generator.xml</configurationFile>
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
                 </configuration>
